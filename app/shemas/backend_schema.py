@@ -1,21 +1,30 @@
-from pydantic import BaseModel, Field
 from typing import List
+from pydantic import BaseModel,Field
+
+class GeneratedDirectory(BaseModel):
+    path: str = Field(
+        description="The path of the dirctory"
+    )
+    
+
+class GeneratedFile(BaseModel):
+    path: str = Field(
+        description="Relative file path"
+    )
+
+    content: str = Field(
+        description="The content of the file"
+    )
 
 class BackendOutput(BaseModel):
-    folder_structure: List[str] = Field(
-        description="Backend Folder structure of the project"
+    directories: List[GeneratedDirectory] = Field(
+        description="Directories required for the backend"
     )
 
-    api_routes: List[str] = Field(
-        description="Api routes of the project"
+    files: List[GeneratedFile] = Field(
+        description="Files required for the backend."
     )
 
-    authentication: str
-
-    orm: str
-
-    dependencies: List[str]
-
-    Db_connection: str
-
-
+    dependencies: List[str] = Field(
+        description="dependencies of the project"
+    )

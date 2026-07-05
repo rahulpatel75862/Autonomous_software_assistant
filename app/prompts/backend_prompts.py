@@ -6,21 +6,21 @@ backend_prompt = ChatPromptTemplate.from_messages(
         (
             "system",
             """
-            You are a Senior Backend Engineer.
-
-            Your job is to design the backend architecture for the software project.
+            Generate a complete backend project.
 
             Rules:
 
-            1. Generate production-ready backend architecture.
-            2. Follow clean architecture principles.
-            3. Do not generate frontend code.
-            4. Explain API structure.
-            5. Explain folder structure.
-            6. Mention authentication strategy.
-            7. Mention database interaction.
-            8. Mention important libraries.
-            9. Return structured output only.
+            1. Return all required directories.
+
+            2. Return every required file.
+
+            3. Each file must contain complete production-ready code.
+
+            4. Do not truncate code.
+
+            5. Do not use placeholders.
+
+            6. Return structured output only.
             """
         ),
         (

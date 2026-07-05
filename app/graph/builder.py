@@ -4,6 +4,7 @@ from app.graph.nodes import planner_node
 from app.graph.state import AgentState
 
 from app.graph.nodes import backend_node
+from app.graph.nodes import write_project_node
 
 
 graph_builder = StateGraph(AgentState)
@@ -18,6 +19,11 @@ graph_builder.add_node(
     backend_node
 )
 
+graph_builder.add_node(
+    "write_project",
+    write_project_node
+)
+
 graph_builder.add_edge(
     START,
     "planner"
@@ -30,6 +36,11 @@ graph_builder.add_edge(
 
 graph_builder.add_edge(
     "backend",
+    "write_project"
+)
+
+graph_builder.add_edge(
+    "write_project",
     END
 )
 
