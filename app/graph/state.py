@@ -6,6 +6,8 @@ from langgraph.graph.message import add_messages
 
 from app.shemas.planner_schema import PlannerOutput
 
+from app.shemas.backend_schema import BackendOutput
+
 
 class AgentState(TypedDict):
     """
@@ -26,7 +28,7 @@ class AgentState(TypedDict):
     project_plan: PlannerOutput | None
 
     # Backend Agent Output
-    backend_code: str | None
+    backend_code: BackendOutput | None
 
     # Frontend Agent Output
     frontend_code: str | None
