@@ -1,9 +1,12 @@
 from pathlib import Path
+from langchain_core.tools import tool
 
 
-class DirectoryTool:
-    @staticmethod
-    def create_directory(filepath: str):
+@tool
+def create_directory(filepath: str):
+        """
+        Tools responsible for creating directory
+        """
         try:
             if not filepath:
                 raise FileNotFoundError("File not found")
