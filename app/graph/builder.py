@@ -5,6 +5,7 @@ from app.graph.state import AgentState
 
 from app.graph.nodes import backend_node
 from app.graph.nodes import write_project_node
+from app.graph.nodes import frontend_node
 
 
 graph_builder = StateGraph(AgentState)
@@ -17,6 +18,11 @@ graph_builder.add_node(
 graph_builder.add_node(
     "backend",
     backend_node
+)
+
+graph_builder.add_node(
+    "frontend",
+    frontend_node
 )
 
 graph_builder.add_node(
@@ -36,6 +42,11 @@ graph_builder.add_edge(
 
 graph_builder.add_edge(
     "backend",
+    "frontend"
+)
+
+graph_builder.add_edge(
+    "frontend",
     "write_project"
 )
 

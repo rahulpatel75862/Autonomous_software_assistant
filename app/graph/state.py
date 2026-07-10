@@ -8,6 +8,8 @@ from app.shemas.planner_schema import PlannerOutput
 
 from app.shemas.backend_schema import BackendOutput
 
+from app.shemas.frontend_schema import FrontendOutput
+
 
 class AgentState(TypedDict):
     """
@@ -31,7 +33,7 @@ class AgentState(TypedDict):
     backend_code: BackendOutput | None
 
     # Frontend Agent Output
-    frontend_code: str | None
+    frontend_code: FrontendOutput | None
 
     # Database Agent Output
     database_schema: str | None

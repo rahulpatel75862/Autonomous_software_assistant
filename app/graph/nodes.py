@@ -1,8 +1,9 @@
 from app.agents.planner_agent import planner_agent
 from app.agents.backend_agent import backend_agent
+from app.agents.frontend_agent import frontend_agent
 from app.graph.state import AgentState
-from app.tools.directory_tool import DirectoryTool
-from app.tools.file_writer import FileWriterTool
+from app.tools.directory_tool import create_directory
+from app.tools.file_writer import write_file
 
 
 def planner_node(state: AgentState) -> AgentState:
@@ -40,16 +41,59 @@ def backend_node(state: AgentState) -> AgentState:
         "backend_code": backend_output
     }
 
+def frontend_node(state: AgentState) -> AgentState:
+    """
+    Frontend Node
+    Takes the user requirement from the state,
+    invokes the frontend agent,
+    and stores the generated response
+    back into the state.
+    """
+    frontend_output = frontend_agent.invoke(
+        requirement=state["project_plan"]
+    )
+
+    return {
+        "frontend_code": frontend_output
+    }
+
 def write_project_node(state: AgentState) -> AgentState:
     backend_output = state["backend_code"]
+    frontend_output = state["frontend_code"]
 
     #create Directories
     for directory in backend_output.directories:
-        DirectoryTool.create_directory(directory.path)
+        create_directory.invoke(
+            {
+                "filepath": directory.path
+            }
+        )
 
     #create files
     for file in backend_output.files:
-        FileWriterTool.write_file(
-            filepath=file.path,
-            content=file.content
+        write_file.invoke(
+            {
+                "filepath": file.path,
+                "content":file.content
+            }
         )
+
+    #for frontend
+
+    #create Directories
+    for directory in frontend_output.directories:
+        create_directory.invoke(
+            {
+                "filepath": directory.path
+            }
+        )
+
+    #create files
+    for file in frontend_output.files:
+        write_file.invoke(
+            {
+                "filepath": file.path,
+                "content":file.content
+            }
+        )
+
