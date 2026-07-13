@@ -29,6 +29,12 @@ planner_prompts = ChatPromptTemplate.from_messages(
             user requirements:
 
             {requirements}
+
+            ================================
+
+            Previous similar projects
+
+            {memory}
             """
         )
     ]

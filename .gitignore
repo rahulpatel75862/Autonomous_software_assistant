@@ -20,4 +20,4 @@ __pycache__/
 
 test.py
 
-chroma_db/
+chroma_db

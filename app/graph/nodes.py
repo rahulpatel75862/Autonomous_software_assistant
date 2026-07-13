@@ -4,7 +4,7 @@ from app.agents.frontend_agent import frontend_agent
 from app.graph.state import AgentState
 from app.tools.directory_tool import create_directory
 from app.tools.file_writer import write_file
-
+from app.memory.memory_manager import memory_manager
 
 def planner_node(state: AgentState) -> AgentState:
     """
@@ -16,8 +16,35 @@ def planner_node(state: AgentState) -> AgentState:
     back into the state.
     """
 
+    #search similar documents
+    documents = memory_manager.search(
+        query=state["requirement"],
+        k=3
+    )
+
+    #convert this documents to string because llm can't understand documents
+    memory = "\n\n".join(
+        doc.page_content
+        for doc in documents
+    )
+
+    #we pass this memory as a context with user's requirment to the llm
     project_plan = planner_agent.invoke(
-        requirement=state["requirement"]
+        requirement=state["requirement"],
+        memory=memory
+    )
+
+    #we will save this response i.e project plan and plannar memory in which there will be requirement and project plan saved in the veotor store
+    planner_memory = f"""
+    requirement: {state["requirement"]}
+
+    {project_plan.model_dump_json(indent=2)}
+    """
+    memory_manager.save(
+        text=planner_memory,
+        metadata={
+            "agent": "planner"
+        }
     )
 
     return {

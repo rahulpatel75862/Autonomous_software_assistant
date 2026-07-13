@@ -12,11 +12,12 @@ class PlannerAgent:
             | model.with_structured_output(PlannerOutput)
         )
 
-    def invoke(self, requirement: str) -> PlannerOutput:
+    def invoke(self, requirement: str, memory: str) -> PlannerOutput:
 
         return self.chain.invoke(
             {
-                "requirements": requirement
+                "requirements": requirement,
+                "memory": memory
             }
         )
     
