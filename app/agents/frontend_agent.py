@@ -7,10 +7,11 @@ class FrontendAgent:
     def __init__(self):
         self.chain = frontend_prompt | model.with_structured_output(FrontendOutput)
 
-    def invoke(self, requirement: str) -> FrontendOutput:
+    def invoke(self, requirement: str, memory: str) -> FrontendOutput:
         response = self.chain.invoke(
             {
-                "project_plan": requirement
+                "project_plan": requirement,
+                "memory": memory
             }
         )
         return response

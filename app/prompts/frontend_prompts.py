@@ -30,6 +30,11 @@ Rules:
             Project Plan
 
             {project_plan}
+
+            =========================
+
+            previous similar projects
+            {memory}
             """
         )
     ]
