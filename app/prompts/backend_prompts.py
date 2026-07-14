@@ -29,6 +29,11 @@ backend_prompt = ChatPromptTemplate.from_messages(
             Project Plan
 
             {project_plan}
+
+            =============================
+            previous similar projects
+
+            {memory}
             """
         )
     ]

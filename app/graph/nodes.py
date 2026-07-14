@@ -60,8 +60,38 @@ def backend_node(state: AgentState) -> AgentState:
     and stores the generated response
     back into the state.
     """
+    # backend_output = backend_agent.invoke(
+    #     requirement=state["project_plan"]
+    # )
+
+    #search similar documents
+    documents = memory_manager.search(
+        query=state["requirement"],
+        k=3
+    )
+
+    #convert this documents to string
+    memory = "\n\n".join(
+        doc.page_content for doc in documents
+    )
+
+    #now we will pass this memory with project plan state to the backend agent
     backend_output = backend_agent.invoke(
-        requirement=state["project_plan"]
+        requirement=state["project_plan"].model_dump_json(indent=2),
+        memory=memory
+    )
+
+    #now we have to save this backend_output with project_plan back to the vector stor
+    backend_memory = f"""
+    project_plan: {state['project_plan']}
+
+    {backend_output.model_dump_json(indent=2)}
+    """
+    memory_manager.save(
+        text=backend_memory,
+        metadata={
+            "agent": "backend"
+        }
     )
 
     return {
