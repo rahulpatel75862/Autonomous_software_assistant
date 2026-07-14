@@ -189,3 +189,9 @@ def write_project_node(state: AgentState) -> AgentState:
             }
         )
 
+    project_root = backend_output.directories[0].path
+
+    return {
+        "generated_project_path": project_root
+    }
+

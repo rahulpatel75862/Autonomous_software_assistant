@@ -46,3 +46,5 @@ class AgentState(TypedDict):
 
     # Documentation Agent Output
     documentation: str | None
+
+    generated_project_path: str | None
