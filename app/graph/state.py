@@ -9,6 +9,7 @@ from app.shemas.planner_schema import PlannerOutput
 from app.shemas.frontend_schema import FrontendOutput
 
 from app.shemas.backend_schema import BackendOutput
+from app.shemas.reviewer_schema import ReviewerOutput
 
 
 class AgentState(TypedDict):
@@ -35,16 +36,9 @@ class AgentState(TypedDict):
     # Frontend Agent Output
     frontend_code: FrontendOutput | None
 
-    # Database Agent Output
-    database_schema: str | None
-
-    # Testing Agent Output
-    tests: str | None
 
     # Reviewer Agent Output
-    review: str | None
+    review: ReviewerOutput | None
 
-    # Documentation Agent Output
-    documentation: str | None
-
+    #path of folders created by backend and fronted agent
     generated_project_path: str | None

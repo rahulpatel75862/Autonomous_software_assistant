@@ -5,6 +5,8 @@ from app.graph.state import AgentState
 from app.tools.directory_tool import create_directory
 from app.tools.file_writer import write_file
 from app.memory.memory_manager import memory_manager
+from app.tools.file_reader import read_project
+from app.agents.reviewer_agent import reviewer_agent
 
 def planner_node(state: AgentState) -> AgentState:
     """
@@ -194,4 +196,47 @@ def write_project_node(state: AgentState) -> AgentState:
     return {
         "generated_project_path": project_root
     }
+
+def review_project_node(state: AgentState)-> AgentState:
+    project_path = state["generated_project_path"]
+    if project_path is None:
+        raise ValueError("Generated project path not found.")
+    project = read_project(project_path)
+
+    documents = memory_manager.search(
+        query=state["requirement"],
+        k=3
+    )
+
+    memory = "\n\n".join(
+        doc.page_content for doc in documents
+    )
+
+    reviewer_output = reviewer_agent.invoke(
+        project=project,
+        memory=memory
+    )
+
+    reviewer_memory = f"""
+    requirement: 
+    {state["requirement"]}
+    frontend_code:
+    {state["frontend_code"].model_dump_json(indent=2)}
+    backend_code:
+    {state["backend_code"].model_dump_json(indent=2)}
+    reviewer:
+    {reviewer_output.model_dump_json(indent=2)}
+    """
+
+    memory_manager.save(
+        text=reviewer_memory,
+        metadata={
+            "agent": "Reviewer"
+        }
+    )
+
+    return{
+        "review": reviewer_output
+    }
+
 
