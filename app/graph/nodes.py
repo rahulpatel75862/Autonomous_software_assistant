@@ -62,9 +62,6 @@ def backend_node(state: AgentState) -> AgentState:
     and stores the generated response
     back into the state.
     """
-    # backend_output = backend_agent.invoke(
-    #     requirement=state["project_plan"]
-    # )
 
     #search similar documents
     documents = memory_manager.search(
@@ -78,16 +75,21 @@ def backend_node(state: AgentState) -> AgentState:
     )
 
     #now we will pass this memory with project plan state to the backend agent
-    backend_output = backend_agent.invoke(
+    backend_messages = backend_agent.invoke(
         requirement=state["project_plan"].model_dump_json(indent=2),
         memory=memory
     )
 
+    #final Ai message
+    final_response = backend_messages[-1]
+
     #now we have to save this backend_output with project_plan back to the vector stor
     backend_memory = f"""
-    project_plan: {state['project_plan']}
+    project_plan: {state['project_plan'].model_dump_json(indent=2)}
 
-    {backend_output.model_dump_json(indent=2)}
+    Backend Result:
+    {final_response.content}
+
     """
     memory_manager.save(
         text=backend_memory,
@@ -97,7 +99,7 @@ def backend_node(state: AgentState) -> AgentState:
     )
 
     return {
-        "backend_code": backend_output
+        "backend_code": backend_messages
     }
 
 def frontend_node(state: AgentState) -> AgentState:

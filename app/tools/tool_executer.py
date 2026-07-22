@@ -15,11 +15,11 @@ def execute_tool_calls(messages: list):
         for tool_call in last_message.tool_calls:
             tool = tool_map.get(tool_call["name"])
             if tool is None:
-                continue
+                raise ValueError(f"Unknown tool: {tool_call['name']}")
             result = tool.invoke(tool_call["args"])
             messages.append(
                 ToolMessage(
-                    content=str[result],
+                    content=str(result),
                     tool_call_id=tool_call["id"]
                 )
             )

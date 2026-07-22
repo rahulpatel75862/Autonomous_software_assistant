@@ -16,7 +16,9 @@ def execute_tool_calls(messages: list):
             tool = tool_map.get(tool_call["name"])
             
             if tool is None:
-                continue
+                raise ValueError(
+                    f"Unknown tool {tool_call['name']}"
+                )
 
             result = tool.invoke(tool_call["args"])
 
@@ -26,6 +28,6 @@ def execute_tool_calls(messages: list):
                     tool_call_id = tool_call["id"]
                 )
             )
-            return messages
+        return messages
     except Exception as e:
-        raise RuntimeError(f"something went wrong in execute tool calls function.")
+        raise RuntimeError(f"something went wrong in execute tool calls function. {e}") from e

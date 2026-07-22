@@ -10,6 +10,7 @@ from app.shemas.frontend_schema import FrontendOutput
 
 from app.shemas.backend_schema import BackendOutput
 from app.shemas.reviewer_schema import ReviewerOutput
+from langchain_core.messages import BaseMessage
 
 
 class AgentState(TypedDict):
@@ -31,7 +32,7 @@ class AgentState(TypedDict):
     project_plan: PlannerOutput | None
 
     # Backend Agent Output
-    backend_code: BackendOutput | None
+    backend_code: list[BaseMessage] | None
 
     # Frontend Agent Output
     frontend_code: FrontendOutput | None

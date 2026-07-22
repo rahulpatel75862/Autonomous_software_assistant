@@ -1,5 +1,8 @@
 from pathlib import Path
+from langchain_core.tools import tool
 
+
+@tool
 def read_project(project_path: str)-> str:
     """
     It will read the content of every files and convert it into text.
