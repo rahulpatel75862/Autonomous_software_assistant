@@ -6,9 +6,6 @@ from langgraph.graph.message import add_messages
 
 from app.shemas.planner_schema import PlannerOutput
 
-from app.shemas.frontend_schema import FrontendOutput
-
-from app.shemas.backend_schema import BackendOutput
 from app.shemas.reviewer_schema import ReviewerOutput
 from langchain_core.messages import BaseMessage
 
@@ -35,7 +32,7 @@ class AgentState(TypedDict):
     backend_code: list[BaseMessage] | None
 
     # Frontend Agent Output
-    frontend_code: FrontendOutput | None
+    frontend_code: list[BaseMessage] | None
 
 
     # Reviewer Agent Output

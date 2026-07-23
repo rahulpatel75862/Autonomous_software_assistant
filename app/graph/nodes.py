@@ -110,9 +110,6 @@ def frontend_node(state: AgentState) -> AgentState:
     and stores the generated response
     back into the state.
     """
-    # frontend_output = frontend_agent.invoke(
-    #     requirement=state["project_plan"]
-    # )
 
     documents = memory_manager.search(
         query=state["requirement"],
@@ -123,10 +120,12 @@ def frontend_node(state: AgentState) -> AgentState:
         doc.page_content for doc in documents
     )
 
-    frontend_output = frontend_agent.invoke(
+    frontend_messagges = frontend_agent.invoke(
         requirement=state["project_plan"].model_dump_json(indent=2),
         memory=memory
     )
+
+    final_response = frontend_messagges[-1]
 
     frontend_memory = f"""
     requirement:
@@ -139,7 +138,7 @@ def frontend_node(state: AgentState) -> AgentState:
 
     frontend:
 
-    {frontend_output.model_dump_json(indent=2)}
+    {final_response.content}
     """
 
     memory_manager.save(
@@ -150,7 +149,7 @@ def frontend_node(state: AgentState) -> AgentState:
     )
 
     return {
-        "frontend_code": frontend_output
+        "frontend_code": frontend_messagges
     }
 
 def write_project_node(state: AgentState) -> AgentState:

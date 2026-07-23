@@ -29,7 +29,7 @@ backend_prompt = ChatPromptTemplate.from_messages(
             9. Continue calling tools until the whole backend project has been created.
             10. After all tool calls are finished, simply reply:
 
-            Project generated successfully.
+            Backend Project generated successfully.
             """
         ),
         (
