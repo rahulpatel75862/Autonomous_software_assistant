@@ -16,6 +16,8 @@ class BackendAgent:
             memory = memory
         )
 
+        
+
         while True:
             ai_message = self.llm.invoke(messages)
             messages.append(ai_message)
@@ -23,6 +25,6 @@ class BackendAgent:
             if not ai_message.tool_calls:
                 break
             message = execute_tool_calls(messages)
-        return message
+        return messages
 
 backend_agent = BackendAgent()

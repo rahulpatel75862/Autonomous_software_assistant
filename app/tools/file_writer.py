@@ -13,7 +13,7 @@ def write_file(filepath: str, content: str):
     try:
         if not filepath:
             raise FileNotFoundError("File not exists")
-        elif not content:
+        if content is None:
             raise ValueError("Content not exists")
 
         path = Path(filepath)

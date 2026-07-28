@@ -37,6 +37,3 @@ class AgentState(TypedDict):
 
     # Reviewer Agent Output
     review: ReviewerOutput | None
-
-    #path of folders created by backend and fronted agent
-    generated_project_path: str | None

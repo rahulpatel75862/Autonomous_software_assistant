@@ -7,6 +7,7 @@ from app.tools.file_writer import write_file
 from app.memory.memory_manager import memory_manager
 from app.tools.file_reader import read_project
 from app.agents.reviewer_agent import reviewer_agent
+from app.config import settings
 
 def planner_node(state: AgentState) -> AgentState:
     """
@@ -152,60 +153,18 @@ def frontend_node(state: AgentState) -> AgentState:
         "frontend_code": frontend_messagges
     }
 
-def write_project_node(state: AgentState) -> AgentState:
-    backend_output = state["backend_code"]
-    frontend_output = state["frontend_code"]
 
-    #create Directories
-    for directory in backend_output.directories:
-        create_directory.invoke(
-            {
-                "filepath": directory.path
-            }
-        )
-
-    #create files
-    for file in backend_output.files:
-        write_file.invoke(
-            {
-                "filepath": file.path,
-                "content":file.content
-            }
-        )
-
-    #for frontend
-
-    #create Directories
-    for directory in frontend_output.directories:
-        create_directory.invoke(
-            {
-                "filepath": directory.path
-            }
-        )
-
-    #create files
-    for file in frontend_output.files:
-        write_file.invoke(
-            {
-                "filepath": file.path,
-                "content":file.content
-            }
-        )
-
-    project_root = backend_output.directories[0].path
-
-    return {
-        "generated_project_path": project_root
-    }
 
 def review_project_node(state: AgentState)-> AgentState:
-    project_path = state["generated_project_path"]
-    if project_path is None:
-        raise ValueError("Generated project path not found.")
+    project_path = settings.PROJECT_ROOT
     project = read_project(project_path)
 
     documents = memory_manager.search(
-        query=state["requirement"],
+        query = f"""
+        {state["requirement"]}
+
+        {state["project_plan"].model_dump_json()}
+        """,
         k=3
     )
 
@@ -222,9 +181,9 @@ def review_project_node(state: AgentState)-> AgentState:
     requirement: 
     {state["requirement"]}
     frontend_code:
-    {state["frontend_code"].model_dump_json(indent=2)}
+    {state["frontend_code"][-1].content}
     backend_code:
-    {state["backend_code"].model_dump_json(indent=2)}
+    {state["backend_code"][-1].content}
     reviewer:
     {reviewer_output.model_dump_json(indent=2)}
     """
@@ -232,7 +191,7 @@ def review_project_node(state: AgentState)-> AgentState:
     memory_manager.save(
         text=reviewer_memory,
         metadata={
-            "agent": "Reviewer"
+            "agent": "reviewer"
         }
     )
 

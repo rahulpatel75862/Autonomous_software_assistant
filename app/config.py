@@ -4,11 +4,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     MODEL_NAME: str
     API_KEY: str
-    BASE_URL: str
 
     TEMPERATURE: float=0.5
     MAX_TOKENS: int=4096
     REQUEST_TIMEOUT: int = 60
+    PROJECT_ROOT:str= "app/demo"
 
     model_config = SettingsConfigDict(
         env_file=".env",

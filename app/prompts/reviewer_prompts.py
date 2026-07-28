@@ -11,14 +11,21 @@ reviewer_prompt = ChatPromptTemplate.from_messages(
 
             Rules:
 
-            1. Identify bugs.
-            2. Identify missing files.
-            3. Identify security issues.
-            4. Identify performance issues.
-            5. Identify bad coding practices.
-            6. Suggest improvements.
-            7. Give an overall project quality score out of 10.
-            8. Return structured output only.
+            1. Folder structure
+            2. Code quality
+            3. Architecture
+            4. Best practices
+            5. Scalability
+            6. Error handling
+            7. Security
+            8. Naming conventions
+            9. Production readiness
+
+            Return ONLY structured output.
+
+            Do not rewrite code.
+            Do not generate code.
+            Do not explain unnecessarily.
             """
         ),
         (
