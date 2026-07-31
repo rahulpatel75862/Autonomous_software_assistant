@@ -78,7 +78,8 @@ def backend_node(state: AgentState) -> AgentState:
     #now we will pass this memory with project plan state to the backend agent
     backend_messages = backend_agent.invoke(
         requirement=state["project_plan"].model_dump_json(indent=2),
-        memory=memory
+        memory=memory,
+        output_path=state["GeneratedPath"]
     )
 
     #final Ai message
@@ -123,7 +124,8 @@ def frontend_node(state: AgentState) -> AgentState:
 
     frontend_messagges = frontend_agent.invoke(
         requirement=state["project_plan"].model_dump_json(indent=2),
-        memory=memory
+        memory=memory,
+        output_path=state["GeneratedPath"]
     )
 
     final_response = frontend_messagges[-1]

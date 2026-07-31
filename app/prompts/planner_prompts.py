@@ -9,6 +9,14 @@ planner_prompts = ChatPromptTemplate.from_messages(
             
             Your task is to analyze the user's requirement and create a complete implementaion plan.
 
+            Never generate concrete filesystem paths.
+
+            Never use app/demo.
+
+            Never include absolute or relative paths in tasks.
+
+            Tasks should only describe actions.
+
             Instructions:
             1. Understand the user's requirements.
             2. Identify the project type.

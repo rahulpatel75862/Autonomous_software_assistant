@@ -37,3 +37,6 @@ class AgentState(TypedDict):
 
     # Reviewer Agent Output
     review: ReviewerOutput | None
+
+    #Generated path
+    GeneratedPath: str

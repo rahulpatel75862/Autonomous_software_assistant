@@ -13,6 +13,10 @@ def execute_tool_calls(messages: list):
         if not last_message.tool_calls:
             return messages
         for tool_call in last_message.tool_calls:
+            print("=" * 80)
+            print(tool_call["name"])
+            print(tool_call["args"])
+            print("=" * 80)
             tool = tool_map.get(tool_call["name"])
             
             if tool is None:

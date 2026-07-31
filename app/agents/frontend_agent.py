@@ -9,10 +9,11 @@ class FrontendAgent:
     def __init__(self):
         self.llm = tool_llm
 
-    def invoke(self, requirement: str, memory: str) -> FrontendOutput:
+    def invoke(self, requirement: str, memory: str,output_path: str) -> FrontendOutput:
         messages = frontend_prompt.format_messages(
             project_plan = requirement,
-            memory = memory
+            memory = memory,
+            output_path = output_path
         )
 
         while True:
